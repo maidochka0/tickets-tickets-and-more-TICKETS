@@ -1,0 +1,31 @@
+для работы с разными типами билетов и возможным добавлением новых в будущем, типы билетов берем из отдельной таблицы, а не фиксированно из неизменяемой как раньше. для подсчета количества билетов каждого типа тоже создадим отдельную таблицу. в рамках этого поздания, можно больше ниче не менять. более подробно читать в документации.
+```
+CREATE TABLE ticket_types (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL
+);
+```
+окончательный вид:
+```
+CREATE TABLE ticket_types (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL
+);
+CREATE TABLE tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    ticket_type_id INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (ticket_type_id) REFERENCES ticket_types(id)
+);
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    event_date DATETIME NOT NULL,
+    barcode VARCHAR(120) UNIQUE NOT NULL,
+    equal_price INT NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
